@@ -9,7 +9,7 @@ interface Props {
   className?: string;
 }
 
-const ProductsList = ({ products, className }: Props) => {
+const ProductsList = ({ products }: Props) => {
   return (
     <Container
       className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10")}

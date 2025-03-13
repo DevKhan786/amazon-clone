@@ -34,7 +34,7 @@ const FavoriteProducts = () => {
               Your favorites are empty
             </h2>
             <p className="text-gray-600">
-              Looks like you haven't added any items to your favorites yet.
+              Looks like you haven&apos;t added any items to your favorites yet.
             </p>
             <Button
               onClick={() => router.push("/")}

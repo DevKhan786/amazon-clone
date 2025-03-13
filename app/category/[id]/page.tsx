@@ -1,7 +1,6 @@
 import CategoryProducts from "@/components/CategoryProducts";
 import Container from "@/components/Container";
 import { fetchData } from "@/hooks/fetchData";
-import { Product } from "@/type";
 import React from "react";
 
 const CategoyPage = async ({ params }: { params: Promise<{ id: string }> }) => {

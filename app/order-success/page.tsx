@@ -1,12 +1,21 @@
 // app/order-success/page.tsx
-import React from "react";
+"use client";
+import { useEffect } from "react";
 import { auth } from "@/auth";
 import Container from "@/components/Container";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
+import { store } from "@/lib/store";
+import { useSession } from "next-auth/react";
 
-export default async function OrderSuccessPage() {
-  const session = await auth();
+export default function OrderSuccessPage() {
+  const { resetCart } = store();
+  const { data: session } = useSession();
+
+  // Clear cart when the success page loads
+  useEffect(() => {
+    resetCart();
+  }, [resetCart]);
 
   return (
     <Container className="min-h-screen py-20">

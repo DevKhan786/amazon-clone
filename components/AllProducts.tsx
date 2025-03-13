@@ -53,7 +53,7 @@ const AllProducts = ({ categories }: { categories: string[] }) => {
         const skip = pageToLoad * productsPerPage;
 
         // Build endpoint based on category
-        let endpoint = selectedCategory
+        const endpoint = selectedCategory
           ? `https://dummyjson.com/products/category/${selectedCategory}?limit=${productsPerPage}&skip=${skip}`
           : `https://dummyjson.com/products?limit=${productsPerPage}&skip=${skip}`;
 
@@ -81,7 +81,7 @@ const AllProducts = ({ categories }: { categories: string[] }) => {
         setLoadingMore(false);
       }
     },
-    [selectedCategory, priceValue, priceFilter, productsPerPage]
+    [selectedCategory, priceValue, productsPerPage]
   );
 
   // Initial fetch
@@ -231,7 +231,7 @@ const AllProducts = ({ categories }: { categories: string[] }) => {
 
                     {!hasMore && products.length > 0 && (
                       <p className="text-gray-500">
-                        You've reached the end of the results
+                        You&apos;ve reached the end of the results
                       </p>
                     )}
                   </div>

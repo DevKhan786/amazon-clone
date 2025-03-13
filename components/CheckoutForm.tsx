@@ -10,7 +10,6 @@ export default function CheckoutForm() {
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const [paymentError, setPaymentError] = useState("");
-  const router = useRouter();
   const { resetCart } = store();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,6 +41,7 @@ export default function CheckoutForm() {
         resetCart();
       }
     } catch (err: any) {
+      
       console.error("Payment error:", err);
       setPaymentError(err.message || "Payment failed");
       setIsLoading(false);

@@ -8,7 +8,6 @@ import { store } from "@/lib/store";
 import ProductRating from "./ProductRating";
 import ProductAvailability from "./ProductAvailability";
 import ProductPrice from "./ProductPrice";
-import { Heart } from "lucide-react";
 import toast from "react-hot-toast";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 

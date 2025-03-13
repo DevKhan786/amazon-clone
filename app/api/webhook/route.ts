@@ -50,10 +50,10 @@ export async function POST(request: Request) {
 
     // Return 200 for other event types
     return NextResponse.json({ received: true });
-  } catch (err: any) {
-    console.error("Webhook error:", err.message);
+  } catch (err: unknown) {
+    const error = err instanceof Error ? err : new Error("Unknown error");
     return NextResponse.json(
-      { error: `Webhook Error: ${err.message}` },
+      { error: `Webhook Error: ${error.message}` },
       { status: 400 }
     );
   }

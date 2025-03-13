@@ -40,9 +40,11 @@ export default function CheckoutPage() {
 
         const data = await response.json();
         setClientSecret(data.clientSecret);
-      } catch (err: any) {
+      } catch (err: unknown) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Unknown error";
         console.error("Checkout error:", err);
-        setError(err.message || "Failed to initialize payment gateway");
+        setError(errorMessage || "Failed to initialize payment gateway");
       } finally {
         setLoading(false);
       }

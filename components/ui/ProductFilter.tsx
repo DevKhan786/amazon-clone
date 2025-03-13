@@ -2,8 +2,7 @@
 import React, { useState } from "react";
 import { Slider } from "./slider";
 import { Button } from "./button";
-import { Checkbox } from "./checkbox";
-import { Label } from "./label";
+
 import { X, ChevronDown, ChevronUp, Filter } from "lucide-react";
 
 interface Props {
@@ -23,7 +22,6 @@ const ProductFilter = ({
   setSelectedCategory,
   selectedCategory,
   setPriceFilter,
-  priceFilter,
   setPriceValue,
   priceValue,
   defaultPrice,

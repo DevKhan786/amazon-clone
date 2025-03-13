@@ -5,13 +5,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 
-const ProductIcon = ({
-  product,
-  className,
-}: {
-  product: Product;
-  className?: string;
-}) => {
+const ProductIcon = ({ product }: { product: Product; className?: string }) => {
   const { favoriteProduct, addToFavorite } = store();
   const [existingProduct, setExistingProduct] = useState<Product | null>(null);
 
@@ -21,7 +15,7 @@ const ProductIcon = ({
     );
     setExistingProduct(availableProduct || null);
   }, [product, favoriteProduct]);
-  
+
   const handleFavourite = (e: React.MouseEvent<HTMLSpanElement>) => {
     e.preventDefault();
     if (product) {
