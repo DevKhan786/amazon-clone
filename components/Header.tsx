@@ -9,7 +9,7 @@ import SignOutButton from "./SignOutButton";
 import SignInButton from "./SignInButton";
 import HeaderBottom from "./HeaderBottom";
 import SearchInput from "./SearchInput";
-import OrderBtn from "./OrderBtn";
+
 import { fetchData } from "@/hooks/fetchData";
 
 const Header = async () => {
