@@ -1,44 +1,78 @@
-"use client";
-import {
-  PaymentElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+// components/CheckoutForm.tsx
+'use client';
+import { useState } from 'react';
+import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
+import { useRouter } from 'next/navigation';
+import { store } from '@/lib/store';
 
-const CheckoutForm = () => {
+export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+  const router = useRouter();
+  const { resetCart } = store();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!stripe || !elements) return;
 
-    setLoading(true);
+    if (!stripe || !elements) {
+      // Stripe.js hasn't loaded yet
+      return;
+    }
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: { return_url: `${window.location.origin}/order-success` },
-    });
+    setIsLoading(true);
+    setPaymentError("");
 
-    if (error) alert(error.message);
-    setLoading(false);
+    try {
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          // Redirect to the order success page after payment
+          return_url: `${window.location.origin}/order-success`,
+        },
+      });
+
+      // If error, display message
+      if (error) {
+        setPaymentError(error.message || "Something went wrong with your payment");
+        setIsLoading(false);
+      } else {
+        // Successful payment would redirect to return_url
+        resetCart();
+      }
+    } catch (err: any) {
+      console.error("Payment error:", err);
+      setPaymentError(err.message || "Payment failed");
+      setIsLoading(false);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
+    <form onSubmit={handleSubmit} className="space-y-8">
+      {paymentError && (
+        <div className="p-4 bg-red-50 text-red-700 rounded-md">
+          {paymentError}
+        </div>
+      )}
+      
       <PaymentElement />
-      <Button
-        type="submit"
-        disabled={!stripe || loading}
-        className="w-full mt-6"
-      >
-        {loading ? "Processing..." : "Pay Now"}
-      </Button>
+      
+      <div className="pt-4">
+        <button
+          type="submit"
+          disabled={!stripe || isLoading}
+          className={`w-full py-3 px-4 text-white rounded-md ${
+            isLoading ? "bg-gray-400" : "bg-green-600 hover:bg-green-700"
+          } transition-colors`}
+        >
+          {isLoading ? "Processing..." : "Pay Now"}
+        </button>
+      </div>
+      
+      <p className="text-gray-500 text-sm text-center">
+        Your payment is processed securely with Stripe.
+      </p>
     </form>
   );
-};
-
-export default CheckoutForm;
+}
