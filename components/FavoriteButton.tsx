@@ -2,18 +2,25 @@
 import Link from "next/link";
 import React from "react";
 import { store } from "../lib/store";
+import { FaHeart } from "react-icons/fa";
 
 const FavoriteButton = () => {
   const { favoriteProduct } = store();
   return (
     <Link
       href={"/favorite"}
-      className="text-xs text-gray-100 hidden xl:inline-flex flex-col justify-center px-2 border border-transparent hover:border-white cursor-pointer duration-300 h-[70%] relative"
+      className="flex items-center px-1 sm:px-2 hover:scale-110 cursor-pointer duration-300 h-[60%] sm:h-[65%] md:h-[70%] relative"
     >
-      <p>Marked</p>
-      <p className="text-white font-bold">& Favorite</p>
+      <div className="hidden xs:flex flex-col">
+        <p className="text-xxs xs:text-xs text-gray-100">Your</p>
+        <p className="text-xxs xs:text-xs text-white font-bold">Favorites</p>
+      </div>
 
-      <span className="absolute right-2 top-2 w-4 h-4 border-[1px] border-gray-400 flex items-center justify-center text-xs text-amazonOrangeDark font-medium rounded-sm">
+      <div className="flex xs:hidden items-center justify-center">
+        <FaHeart className="text-white text-lg" />
+      </div>
+
+      <span className="absolute top-1 left-6 w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-amazonOrangeDark flex items-center justify-center text-xxs xs:text-xs text-black font-bold">
         {favoriteProduct?.length > 0 ? favoriteProduct?.length : 0}
       </span>
     </Link>

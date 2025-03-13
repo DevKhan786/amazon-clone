@@ -1,9 +1,12 @@
 // components/CheckoutForm.tsx
-'use client';
-import { useState } from 'react';
-import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-import { useRouter } from 'next/navigation';
-import { store } from '@/lib/store';
+"use client";
+import { useState } from "react";
+import {
+  useStripe,
+  useElements,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
+import { store } from "@/lib/store";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -34,16 +37,18 @@ export default function CheckoutForm() {
 
       // If error, display message
       if (error) {
-        setPaymentError(error.message || "Something went wrong with your payment");
+        setPaymentError(
+          error.message || "Something went wrong with your payment"
+        );
         setIsLoading(false);
       } else {
         // Successful payment would redirect to return_url
         resetCart();
       }
-    } catch (err: any) {
-      
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
       console.error("Payment error:", err);
-      setPaymentError(err.message || "Payment failed");
+      setPaymentError(errorMessage || "Payment failed");
       setIsLoading(false);
     }
   };
@@ -55,9 +60,9 @@ export default function CheckoutForm() {
           {paymentError}
         </div>
       )}
-      
+
       <PaymentElement />
-      
+
       <div className="pt-4">
         <button
           type="submit"
@@ -69,7 +74,7 @@ export default function CheckoutForm() {
           {isLoading ? "Processing..." : "Pay Now"}
         </button>
       </div>
-      
+
       <p className="text-gray-500 text-sm text-center">
         Your payment is processed securely with Stripe.
       </p>
