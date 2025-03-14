@@ -18,11 +18,6 @@ const HeaderBottom = () => {
           All
         </button>
 
-        <p className="link">Today&apos;s Deals</p>
-        <p className="link">Customer Service</p>
-        <p className="link hidden lg:inline-flex">Registry</p>
-        <p className="link hidden lg:inline-flex">Gift Cards</p>
-        <p className="link hidden lg:inline-flex">Sell</p>
         <Link href="/products" className="link">
           All Products
         </Link>
