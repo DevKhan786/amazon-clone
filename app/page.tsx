@@ -6,11 +6,14 @@ const { products } = await fetchData(endpoint);
 
 export default async function Home() {
   return (
-    <div className="space-y-10">
-      <h1 className="text-3xl font-bold text-center mt-10">
-        Products for you:
-      </h1>
-      <div className="p-5 ">
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl shadow-lg mb-10">
+        <h1 className="text-4xl md:text-6xl font-extrabold text-center py-6 tracking-tight">
+          For You
+        </h1>
+      </div>
+
+      <div className="grid grid-cols-1 gap-8">
         <ProductsList products={products} />
       </div>
     </div>

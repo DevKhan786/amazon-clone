@@ -1,3 +1,4 @@
+// Header.tsx
 import { logo } from "@/assets";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +10,6 @@ import SignOutButton from "./SignOutButton";
 import SignInButton from "./SignInButton";
 import HeaderBottom from "./HeaderBottom";
 import SearchInput from "./SearchInput";
-
 import { fetchData } from "@/hooks/fetchData";
 
 const Header = async () => {
@@ -19,35 +19,30 @@ const Header = async () => {
 
   return (
     <header className="bg-transparent sticky top-0 z-50">
-      <div className="w-full h-16 sm:h-18 md:h-20 bg-amazonBlue text-lightText sticky top-0 z-50">
-        <div className="h-full w-full inline-flex items-center justify-between gap-1 sm:gap-2 md:gap-3 px-2 sm:px-3 md:px-4">
+      <div className="w-full h-14 bg-amazonBlue text-lightText sticky top-0 z-50">
+        {/* Top Row */}
+        <div className="h-full w-full flex items-center justify-between gap-1 px-2">
           {/* Logo */}
-          <Link href={"/"}>
-            <div className="headerItem">
-              <Image
-                className="w-20 sm:w-24 md:w-28 object-cover mt-1"
-                src={logo}
-                alt="logo"
-                priority
-              />
-            </div>
+          <Link href={"/"} className="shrink-0 w-16 md:w-24">
+            <Image
+              className="w-full object-contain"
+              src={logo}
+              alt="logo"
+              priority
+            />
           </Link>
-          {/* Deliver */}
-          <div className="headerItem hidden lg:inline-flex gap-1">
-            <SlLocationPin className="text-base md:text-lg text-white" />
-            <div className="text-xxs sm:text-xs">
-              <p>Deliver to</p>
-              <p className="text-white font-bold uppercase">USA</p>
-            </div>
+
+          {/* Search Input - Hidden on mobile */}
+          <div className="hidden md:flex flex-1 mx-1 min-w-[100px]">
+            <SearchInput categories={categories} />
           </div>
-          <SearchInput categories={categories} />
 
-          {session?.user ? <SignOutButton /> : <SignInButton />}
-
-          {/* Favorite */}
-          <FavoriteButton />
-          {/* Cart */}
-          <CartButton />
+          {/* Right Side Buttons */}
+          <div className="flex items-center gap-1 md:gap-2 shrink-0">
+            {session?.user ? <SignOutButton /> : <SignInButton />}
+            <FavoriteButton />
+            <CartButton />
+          </div>
         </div>
       </div>
       <HeaderBottom />
