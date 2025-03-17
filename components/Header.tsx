@@ -2,7 +2,6 @@
 import { logo } from "@/assets";
 import Image from "next/image";
 import Link from "next/link";
-import { SlLocationPin } from "react-icons/sl";
 import { auth } from "@/auth";
 import CartButton from "./CartButton";
 import FavoriteButton from "./FavoriteButton";
@@ -20,9 +19,7 @@ const Header = async () => {
   return (
     <header className="bg-transparent sticky top-0 z-50">
       <div className="w-full h-14 bg-amazonBlue text-lightText sticky top-0 z-50">
-        {/* Top Row */}
         <div className="h-full w-full flex items-center justify-between gap-1 px-2">
-          {/* Logo */}
           <Link href={"/"} className="shrink-0 w-16 md:w-24">
             <Image
               className="w-full object-contain"
@@ -32,12 +29,10 @@ const Header = async () => {
             />
           </Link>
 
-          {/* Search Input - Hidden on mobile */}
           <div className="hidden md:flex flex-1 mx-1 min-w-[100px]">
             <SearchInput categories={categories} />
           </div>
 
-          {/* Right Side Buttons */}
           <div className="flex items-center gap-1 md:gap-2 shrink-0">
             {session?.user ? <SignOutButton /> : <SignInButton />}
             <FavoriteButton />
