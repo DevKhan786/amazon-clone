@@ -1,4 +1,3 @@
-// app/order-success/page.tsx
 "use client";
 import { useEffect } from "react";
 import Container from "@/components/Container";
@@ -11,7 +10,6 @@ export default function OrderSuccessPage() {
   const { resetCart } = store();
   const { data: session } = useSession();
 
-  // Clear cart when the success page loads
   useEffect(() => {
     resetCart();
   }, [resetCart]);

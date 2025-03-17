@@ -1,9 +1,7 @@
-// app/api/create-checkout-session/route.ts
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { Product } from "@/type";
 
-// Initialize Stripe with your secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(request: Request) {
@@ -14,16 +12,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No items provided" }, { status: 400 });
     }
 
-    // Calculate total amount in cents
     const amount = items.reduce((total: number, item: Product) => {
       return total + Math.round(item.price * 100) * (item.quantity || 1);
     }, 0);
 
-    // Create a Payment Intent
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: "usd",
-      // Store cart items as metadata
+
       metadata: {
         items: JSON.stringify(
           items.map((item: Product) => ({

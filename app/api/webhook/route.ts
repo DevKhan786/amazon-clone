@@ -1,4 +1,3 @@
-// app/api/webhook/route.ts
 import { adminDB } from "@/firebase-admin";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
@@ -13,53 +12,58 @@ export async function POST(request: Request) {
   try {
     const event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
 
-    // Handle payment success event
-    if (event.type === "payment_intent.succeeded") {
-      const paymentIntent = event.data.object as Stripe.PaymentIntent;
+    switch (event.type) {
+      case "checkout.session.completed":
+        const checkoutSession = event.data.object as Stripe.Checkout.Session;
+        console.log(`Checkout session completed: ${checkoutSession.id}`);
+        break;
 
-      // Make sure we have the required data
-      if (!paymentIntent.metadata?.items) {
-        console.error("No items found in payment intent metadata");
-        return NextResponse.json(
-          { error: "Invalid payment data" },
-          { status: 400 }
-        );
-      }
+      case "payment_intent.succeeded":
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
-      // Parse items from metadata
-      const items = JSON.parse(paymentIntent.metadata.items);
+        if (!paymentIntent.metadata?.items) {
+          console.error("No items found in payment intent metadata");
+          return new NextResponse(null, { status: 200 });
+        }
 
-      // Create order in Firestore
-      await adminDB
-        .collection("orders")
-        .doc(paymentIntent.id)
-        .set({
-          id: paymentIntent.id,
-          email: paymentIntent.receipt_email || "guest@example.com",
-          value: {
-            amount: paymentIntent.amount / 100,
-            currency: paymentIntent.currency.toUpperCase(),
-            items: items,
-            timestamp: new Date().toISOString(),
-            status: "completed",
-          },
-        });
+        const items = JSON.parse(paymentIntent.metadata.items);
 
-      return NextResponse.json({ received: true });
+        await adminDB
+          .collection("orders")
+          .doc(paymentIntent.id)
+          .set({
+            id: paymentIntent.id,
+            email: paymentIntent.receipt_email || "guest@example.com",
+            value: {
+              amount: paymentIntent.amount / 100,
+              currency: paymentIntent.currency.toUpperCase(),
+              items: items,
+              timestamp: new Date().toISOString(),
+              status: "completed",
+            },
+          });
+
+        console.log(`Order processed: ${paymentIntent.id}`);
+        break;
+
+      case "payment_intent.payment_failed":
+        const failedPaymentIntent = event.data.object as Stripe.PaymentIntent;
+        console.log(`Payment failed: ${failedPaymentIntent.id}`);
+        break;
+
+      default:
+        console.log(`Unhandled event type ${event.type}`);
     }
 
-    // Return 200 for other event types
-    return NextResponse.json({ received: true });
+    return new NextResponse(null, { status: 200 });
   } catch (err: unknown) {
     const error = err instanceof Error ? err : new Error("Unknown error");
-    return NextResponse.json(
-      { error: `Webhook Error: ${error.message}` },
-      { status: 400 }
-    );
+    console.error(`Webhook Error: ${error.message}`);
+
+    return new NextResponse(null, { status: 200 });
   }
 }
 
-// This is needed for Next.js Edge API routes to handle raw body
 export const config = {
   api: {
     bodyParser: false,
