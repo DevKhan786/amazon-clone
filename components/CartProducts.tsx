@@ -10,7 +10,7 @@ const CartProducts = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   const { cartProduct } = store();
   const router = useRouter();
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-12">
       {!isAuthenticated && (
         <div className="bg-yellow-100 p-4 rounded-md mb-8">
           <p className="text-yellow-800">
@@ -28,7 +28,7 @@ const CartProducts = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
             <h1 className="text-2xl font-bold text-gray-900">Shopping Cart</h1>
           </div>
 
-          <div className="lg:grid lg:grid-cols-12 lg:gap-x-12">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-x-12 px-2">
             <section className="lg:col-span-7 space-y-4">
               {cartProduct?.map((product: Product) => (
                 <CartProduct key={product?.id} product={product} />
